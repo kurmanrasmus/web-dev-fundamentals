@@ -13,9 +13,9 @@ body {
 }
 
 footer {
-padding: 1%;
-color: #fbfbfb;
-background-color: #141414;
+  padding: 1%;
+  color: #fbfbfb;
+  background-color: #141414;
 }
 
 .bodys {
@@ -45,10 +45,6 @@ background-color: #141414;
 .footer-list {
   font-size: 12px;
   list-style: none;
-}
-
-.buttons {
-  margin-top: 7vh;
 }
 
 .button {
