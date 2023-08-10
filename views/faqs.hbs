@@ -2,12 +2,11 @@
 {{#if faqPost.length}}
   <ul class="list-items">
     {{#each faqPost}}
-      <li><a href="/faqPost/{{faqId}}">{{faqTitle}}</a></li>
+      <li><a class="btn btn-link" href="/faqPost/{{faqId}}">{{faqTitle}}</a></li>
     {{/each}}
   </ul>
 {{else}}
   <p>No post exist.</p>
 {{/if}}
-
   <a href="/new-faq-post" class="btn">New post</a>
 

@@ -21,7 +21,7 @@ background-color: #141414;
 .bodys {
   flex: 1;
   color: #141414;
-  padding-top: 2%;
+  padding-top: 6%;
   padding-left: 2%;
   padding-right: 2%;
   background-color: #fbfbfb;
@@ -35,11 +35,11 @@ background-color: #141414;
 
 .list-items {
   list-style: none;
-  text-align: center;
 }
 
 .footer-name {
   font-size: 18px;
+  color: #807fe2;
 }
 
 .footer-list {

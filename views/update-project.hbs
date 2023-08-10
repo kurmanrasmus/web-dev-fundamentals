@@ -2,9 +2,11 @@
 
 {{#if errora.length}}
   <p>Could not update blog</p>
-  <ul>{{#each errors}}<li>
-        {{this}}
-      </li>{{/each}}</ul>
+  <ul>
+    {{#each errors}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
 {{/if}}
 
 <form method="post">
