@@ -1,0 +1,23 @@
+<h2>New Project</h2>
+<p>Create and post a new project on the website.</p>
+<form class="forms" action="/new-project" method="post">
+  <input
+    type="text"
+    placeholder="Title"
+    name="projectTitle"
+    value="{{title}}"
+  />
+  <input
+    type="text"
+    placeholder="Content"
+    name="projectContent"
+    value="{{content}}"
+  />
+  <input
+    type="url"
+    placeholder="Project Link"
+    name="projectLink"
+    value="{{link}}"
+  />
+  <input type="submit" value="Add Post" />
+</form>

@@ -14,23 +14,23 @@ body {
 
 footer {
 padding: 1%;
-color: #141414;
-background-color: #fbfbfb;
+color: #fbfbfb;
+background-color: #141414;
 }
 
 .bodys {
   flex: 1;
-  color: #fbfbfb;
+  color: #141414;
   padding-top: 2%;
   padding-left: 2%;
   padding-right: 2%;
-  background-color: #141414;
+  background-color: #fbfbfb;
 }
 
 .navbar {
   padding-left: 2%;
   padding-right: 2%;
-  background-color: #141414;
+  background-color: #fbfbfb;
 }
 
 .list-items {

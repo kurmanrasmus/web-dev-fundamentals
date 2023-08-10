@@ -1,0 +1,18 @@
+<h2>New Blog Post</h2>
+<p>Write a blogpost</p>
+
+<form class="forms" action="/new-blog-post" method="post">
+    <input
+      type="text"
+      placeholder="Title"
+      name="blogTitle"
+      value="{{title}}"
+    />
+    <input
+      type="text"
+      placeholder="Content"
+      name="blogContent"
+      value="{{content}}"
+    />
+    <input type="submit" value="Post" />
+</form>
