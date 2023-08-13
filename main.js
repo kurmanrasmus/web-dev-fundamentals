@@ -85,7 +85,7 @@ app.use(function (request, response, next) {
   next();
 });
 
-// "Main pages"
+// Basic Pages
 
 app.get('/', function(request, response){
   response.render("landing.hbs")
@@ -127,7 +127,6 @@ app.post("/sign-out", function (request, response) {
 
 app.get("/new-faq-post", function (request, response) {
     response.render("new-faq-post.hbs");
-
 });
 
 app.post("/new-faq-post", function (request, response) {
@@ -156,6 +155,7 @@ app.post("/new-faq-post", function (request, response) {
     response.render("new-faq-post.hbs", model);
   }
 });
+
 app.get('/faqs', function(request, response){
   const query = `SELECT * FROM faq`;
 
@@ -173,6 +173,7 @@ app.get('/faqs', function(request, response){
     }
   });
 });
+
 app.get("/faqPost/:id", function (request, response) {
   const id = request.params.id;
 
@@ -478,7 +479,6 @@ app.get('/blogs', function(request, response){
       const model = {
         blogPost,
       };
-
       response.render("blogs.hbs", model);
     }
   });
