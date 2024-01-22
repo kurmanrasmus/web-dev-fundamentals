@@ -2,7 +2,7 @@
   <h2>{{projectPost.projectTitle}}</h2>
   <p>{{projectPost.projectContent}}</p>
   <a href="{{projectPost.projectLink}}"><p>{{projectPost.projectLink}}</p></a>
-{{#if isSignedIn}}
+  {{#if isSignedIn}}
   <div class="buttons">
     <a href="/update-project/{{projectPost.projectId}}" class="btn">Update</a>
     <form class="button" action="/delete-projectPost/{{projectPost.projectId}}" method="post">

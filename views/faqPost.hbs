@@ -1,14 +1,12 @@
 {{#if faqPost}}
   <h1>{{faqPost.faqTitle}}</h1>
   <p>{{faqPost.faqContent}}</p>
-{{#if isSignedIn}}
   <div class="buttons">
     <a href="/update-faq-post/{{faqPost.faqId}}" class="btn">update</a>
     <form class="button" action="/delete-faqPost/{{faqPost.faqId}}" method="post">
       <input class="btn btn-primary" type="submit" value="delete" />
     </form>
   </div>
-{{/if}}
 {{else}}
   <p>There are no FAQs.</p>
 {{/if}}

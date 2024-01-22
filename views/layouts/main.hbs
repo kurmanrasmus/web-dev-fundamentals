@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurman Portfolio</title>
-    <link rel="stylesheet" href="/layout.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kurman Portfolio</title>
+  <link rel="stylesheet" href="/layout.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
 </head>
 
 <body>
@@ -23,33 +23,28 @@
     {{/unless}}
     {{#if isSignedIn}}
       <form class="form" action="/sign-out" method="post">
-        <input
-          class="btn btn-link btn-sm"
-          type="submit"
-          value="Sign Out"
-        />
-    </form>
+        <input class="btn btn-link btn-sm" type="submit" value="Sign Out"/>
+      </form>
     {{/if}}
   </section>
 </header>
   <div class="bodys">
-      {{{body}}}
+    {{{body}}}
   </div>
-  
-  <footer>
-    <div class="columns col-gapless">
-      <div class="column col-4"></div>
-      <div class="column col-4">
-        <ul class="footer-name">Rasmus Kurman</ul>
-      </div>
-      <div class="column col-4">
-        <ul class="footer-list">
-          <p class="footer-name">SoMe</p>
-          <li>instagram: <a href="https://www.instagram.com/rasmuskurman/">@rasmuskurman</a></li>
-          <li>LinkedIn: <a href="https://www.linkedin.com/in/rasmuskurman">@Rasmus Kurman</a></li>
-        </ul>
-      </div>
+<footer>
+  <div class="columns col-gapless">
+    <div class="column col-4"></div>
+    <div class="column col-4">
+      <ul class="footer-name">Rasmus Kurman</ul>
     </div>
-  </footer>
+    <div class="column col-4">
+      <ul class="footer-list">
+        <p class="footer-name">SoMe</p>
+        <li>instagram: <a href="https://www.instagram.com/rasmuskurman/">@rasmuskurman</a></li>
+        <li>LinkedIn: <a href="https://www.linkedin.com/in/rasmuskurman">@Rasmus Kurman</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

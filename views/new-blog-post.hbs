@@ -1,17 +1,14 @@
 <h2>New Blog Post</h2>
-  <p>Write a blogpost</p>
+
+{{#if errors.length}}
+  <p>Could not post new Blog Post</p>
+  <ul>{{#each errors}}
+    <li>{{this}}</li>
+  {{/each}}</ul>
+{{/if}}
+
 <form class="forms" action="/new-blog-post" method="post">
-  <input
-    type="text"
-    placeholder="Title"
-    name="blogTitle"
-    value="{{title}}"
-  />
-  <input
-    type="text"
-    placeholder="Content"
-    name="blogContent"
-    value="{{content}}"
-  />
-  <input type="submit" value="Post" />
+  <input type="text" placeholder="Title" name="blogTitle" value="{{title}}"/>
+  <input type="text" placeholder="Content" name="blogContent" value="{{content}}"/>
+  <input type="submit" value="Post"/>
 </form>

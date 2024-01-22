@@ -2,25 +2,13 @@
 
 {{#if errors.length}}
   <p>Could not update blog</p>
-  <ul>
-    {{#each errors}}
-      <li>{{this}}</li>
-    {{/each}}
-  </ul>
+  <ul>{{#each errors}}
+    <li>{{this}}</li>
+    {{/each}}</ul>
 {{/if}}
 
 <form method="post">
-  <input
-    type="text"
-    placeholder="Title"
-    name="title"
-    value="{{faq.title}}"
-  />
-  <input
-    type="text"
-    placeholder="Content"
-    name="content"
-    value="{{faq.content}}"
-  />
+  <input type="text" placeholder="Title" name="title" value="{{faq.title}}"/>
+  <input type="text" placeholder="Content" name="content" value="{{faq.content}}"/>
   <input type="submit" value="Update" />
 </form>

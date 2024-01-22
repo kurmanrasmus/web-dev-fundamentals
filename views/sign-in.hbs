@@ -1,5 +1,11 @@
 <h2>Sign in</h2>
 
+{{#if errors.length}}
+  <ul>{{#each errors}}
+    <li>{{this}}</li>
+  {{/each}}</ul>
+{{/if}}
+
 <form action="/sign-in" method="post">
   <div class="forms">
     <input type="text" placeholder="Enter Username" name="username" />

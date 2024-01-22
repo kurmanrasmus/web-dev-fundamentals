@@ -1,16 +1,16 @@
-const express = require('express')
-const expressHandlebars = require('express-handlebars')
-const session = require ('express-session')
+const express = require('express');
+const expressHandlebars = require('express-handlebars');
+const session = require ('express-session');
 const bcrypt = require("bcrypt");
 const db = require('./database.js');
-const connectSqlite3 = require ('connect-sqlite3')
-const app = express()
+const connectSqlite3 = require ('connect-sqlite3');
+const app = express();
 const SQLiteStore = connectSqlite3(session);
 const PORT = process.env.PORT || 3000;
 
 const minContentLength = 6;
 const correctUsername = "Rasmus";
-const correctPassword = "$2b$12$qP2a6l2ka2uX6rZwK0JGBepj8OiwiinOWABVeH7.m20kmKcouE31i";
+const correctHashedPassword = "$2b$12$qP2a6l2ka2uX6rZwK0JGBepj8OiwiinOWABVeH7.m20kmKcouE31i";
 
 function obtainValidationErrorsForFaq(title, content, id) {
   const errors = [];
@@ -60,22 +60,27 @@ function obtainValidationErrorsForBlog(title, content, id) {
   return errors;
 }
 
+function handleDatabaseError(response, error) {
+  console.error("Database error:", error);
+  response.status(500).send("Internal Server Error");
+}
+
 app.engine("hbs", expressHandlebars.engine({
   defaultLayout: 'main.hbs'
-}))
+}));
 
 app.use(
   session({
     secret: "xakalpshvdsskanjnd",
     saveUninitialized: false,
     resave: false,
-    store: new SQLiteStore({db: "sessions.db"}),
+    store: new SQLiteStore(),
   })
 );
 
 app.use(express.urlencoded({
   extended: false
-}))
+}));
 
 app.use(express.static("static"));
 
@@ -88,20 +93,20 @@ app.use(function (request, response, next) {
 // Basic Pages
 
 app.get('/', function(request, response){
-  response.render("landing.hbs")
-})
+  response.render("landing.hbs");
+});
 
 app.get('/contact', function (request, response) {
-    response.render("contact.hbs")
-  })
+  response.render("contact.hbs");
+});
 
 app.get('/about', function(request, response){
-    response.render("about.hbs")
-  })
+  response.render("about.hbs");
+});
 
 app.get('/sign-in', function(request, response){
-    response.render("sign-in.hbs")
-  })
+  response.render("sign-in.hbs");
+});
 
 app.post('/sign-in', function (request, response) {
   const enteredUsername = request.body.username;
@@ -109,7 +114,7 @@ app.post('/sign-in', function (request, response) {
 
   if (
     enteredUsername == correctUsername &&
-    bcrypt.compareSync(enteredPassword, correctPassword)
+    bcrypt.compareSync(enteredPassword, correctHashedPassword)
   ) {
     request.session.isSignedIn = true;
     response.redirect("/");
@@ -126,7 +131,7 @@ app.post("/sign-out", function (request, response) {
 //FAQ
 
 app.get("/new-faq-post", function (request, response) {
-    response.render("new-faq-post.hbs");
+  response.render("new-faq-post.hbs");
 });
 
 app.post("/new-faq-post", function (request, response) {
@@ -141,7 +146,7 @@ app.post("/new-faq-post", function (request, response) {
     const values = [title, content, id];
     db.run(query, values, function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/faqs");
       }
@@ -168,7 +173,6 @@ app.get('/faqs', function(request, response){
       const model = {
         faqPost,
       };
-
       response.render("faqs.hbs", model);
     }
   });
@@ -179,6 +183,7 @@ app.get("/faqPost/:id", function (request, response) {
 
   const query = `SELECT * FROM faq WHERE faqId = ?`;
   const values = [id];
+
   db.get(query, values, function (error, faqPost) {
     const model = {
       faqPost,
@@ -213,7 +218,7 @@ app.post("/update-faq-post/:id", function (request, response) {
   const errors = obtainValidationErrorsForFaq(newTitle, newContent, id);
 
   if (!request.session.isSignedIn) {
-    errors.push("Not logged in");
+    response.redirect("/sign-in");
   }
 
   if (errors == 0) {
@@ -229,7 +234,7 @@ app.post("/update-faq-post/:id", function (request, response) {
 
     db.run(query, values, function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/faqPost/" + id);
       }
@@ -250,14 +255,14 @@ app.post("/update-faq-post/:id", function (request, response) {
 app.post("/delete-faqPost/:id", function (request, response) {
   const id = request.params.id;
   
-    const query = `DELETE FROM faq WHERE faqId = ?`;
+  const query = `DELETE FROM faq WHERE faqId = ?`;
 
-    if (!request.session.isSignedIn) {
-      errors.push("You need to be signed in");
-    } else {
+  if (!request.session.isSignedIn) {
+      response.redirect("/sign-in");
+  } else {
     db.run(query, [id], function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/faqs");
       }
@@ -265,13 +270,15 @@ app.post("/delete-faqPost/:id", function (request, response) {
   }
 });
 
+
+
 //Projecs 
 
 app.get("/new-project", function (request, response) {
-  const model = {
+  if (request.session.isSignedIn) { 
+    const model = {
     errors: [],
   }
-  if (request.session.isSignedIn) {
     response.render("new-project.hbs", model);
   } else {
     response.redirect("/sign-in");
@@ -295,7 +302,7 @@ app.post("/new-project", function (request, response) {
     const values = [title, content, id, link];
     db.run(query, values, function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/projects");
       }
@@ -323,7 +330,6 @@ app.get('/projects', function(request, response){
       const model = {
         projectPost,
       };
-
       response.render("projects.hbs", model);
     }
   });
@@ -366,11 +372,11 @@ app.post("/update-project/:id", function (request, response) {
   const newContent = request.body.content;
   const newLink = request.body.link;
 
+  const errors = obtainValidationErrorsForProjects(newTitle, newContent, newLink, id);
+
   if (!request.session.isSignedIn) {
     errors.push("You need to be signed in");
   }
-
-  const errors = obtainValidationErrorsForProjects(newTitle, newContent, newLink, id);
 
   if (errors.length == 0) {
     const query = `UPDATE
@@ -386,7 +392,7 @@ app.post("/update-project/:id", function (request, response) {
 
     db.run(query, values, function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/projectPost/" + id);
       }
@@ -411,11 +417,11 @@ app.post("/delete-projectPost/:id", function (request, response) {
     const query = `DELETE FROM project WHERE projectId = ?`;
 
     if (!request.session.isSignedIn) {
-      errors.push("You need to be signed in");
+      response.redirect("/sign-in");
     } else {
     db.run(query, [id], function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/projects");
       }
@@ -452,7 +458,7 @@ app.post("/new-blog-post", function (request, response) {
     const values = [title, content, id];
     db.run(query, values, function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/blogs");
       }
@@ -520,11 +526,11 @@ app.post("/update-blog-post/:id", function (request, response) {
   const newTitle = request.body.title;
   const newContent = request.body.content;
 
+  const errors = obtainValidationErrorsForBlog(newTitle, newContent, id);
+
   if (!request.session.isSignedIn) {
     errors.push("You need to be signed in");
   }
-
-  const errors = obtainValidationErrorsForBlog(newTitle, newContent, id);
 
   if (errors == 0) {
     const query = `UPDATE
@@ -539,7 +545,7 @@ app.post("/update-blog-post/:id", function (request, response) {
 
     db.run(query, values, function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/blogPost/" + id);
       }
@@ -561,13 +567,13 @@ app.post("/delete-blogPost/:id", function (request, response) {
   const id = request.params.id;
   
   if (!request.session.isSignedIn) {
-    errors.push("You need to be signed in");
+    response.redirect("/sign-in");
   } else {
     const query = `DELETE FROM blog WHERE blogId = ?`;
 
     db.run(query, [id], function (error) {
       if (error) {
-        console.log(error);
+        handleDatabaseError(response, error);
       } else {
         response.redirect("/blogs");
       }

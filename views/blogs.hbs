@@ -1,10 +1,8 @@
 <h2>Blog</h2>
 {{#if blogPost.length}}
-  <ul class="list-items">
-    {{#each blogPost}}
-      <li><a class="btn btn-link" href="/blogPost/{{blogId}}">{{blogTitle}}</a></li>
-    {{/each}}
-  </ul>
+  <ul class="list-items">{{#each blogPost}}
+    <li><a class="btn btn-link" href="/blogPost/{{blogId}}">{{blogTitle}}</a></li>
+  {{/each}}</ul>
 {{else}}
   <p>No post exist.</p>
 {{/if}}
